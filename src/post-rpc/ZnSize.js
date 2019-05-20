@@ -9,6 +9,17 @@ const getHeight = () => {
     return Math.max(bodyScroll, bodyOffset, documentScroll, documentOffset);
 };
 
+const getWidth = () => {
+    const document = window.document;
+    const bodyLeft = Math.max(document.body.offsetLeft, 0);
+    const documentLeft = Math.max(document.documentElement.offsetLeft, 0);
+    const bodyScroll = document.body.scrollWidth + bodyLeft;
+    const bodyOffset = document.body.offsetWidth + bodyLeft;
+    const documentScroll = document.documentElement.scrollWidth + documentLeft;
+    const documentOffset = document.documentElement.offsetWidth + documentLeft;
+    return Math.max(bodyScroll, bodyOffset, documentScroll, documentOffset);
+}
+
 class ZnSize {
     constructor(client) {
         this.client = client;
@@ -23,7 +34,7 @@ class ZnSize {
             dimensions.height = getHeight() + 'px';
         }
         if (!dimensions.width) {
-            dimensions.width = '300px';
+            dimensions.width =  getWidth() + 'px';
         }
         console.log(dimensions);
         this.client.call('resize', {dimensions}, null, Infinity);
