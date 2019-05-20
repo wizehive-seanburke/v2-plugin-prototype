@@ -3,7 +3,7 @@ import logo from './logo.svg'
 import './App.css'
 
 import { useSubscription } from './hooks'
-import { getMe, znConfirm, znMessage, znModal, znFiltersPanel } from './post-rpc'
+import {getMe, znConfirm, znMessage, znModal, znFiltersPanel, znSize, znCookies, $log} from './post-rpc'
 
 const App = props => {
   const [avatar, setAvatar] = useState(logo)
@@ -11,6 +11,8 @@ const App = props => {
   const [timezone, setTimezone] = useState('')
   const [lastLogin, setLastLogin] = useState('')
   const [items, setItems] = useState([])
+
+  znSize.autoSize();
 
   useSubscription('item', (item, err) => {
     if (err) return console.error(err)
@@ -34,9 +36,20 @@ const App = props => {
 
   const messageButton = () => znMessage('It works!', 'saved', 6000)
 
-  const modalButton = () => znModal({ modalTemplateURL: 'https://b4c498b3.ngrok.io' }, something => console.log(something, 'hey!'))
+  const modalButton = () => znModal({ modalTemplateURL: 'https://plugin.localdev.site:3000' }, something => console.log(something, 'hey!'))
 
   const filtersPanelButton = () => znFiltersPanel({ workspaceId: 3, formId: 4 }, something => console.log(something, 'hey!'))
+
+  const znCookieGetButton = () => znCookies.get('test', data => {
+      // console.log({
+      //   'data': data
+      // });
+    $log.log({
+      'data': data
+    })
+  });
+
+  const znCookiesSetButton = () => znCookies.set('test', 'test string');
 
   return (
     <div className='App'>
@@ -47,6 +60,8 @@ const App = props => {
         <button onClick={messageButton}>znMessage</button>
         <button onClick={modalButton}>znModal</button>
         <button onClick={filtersPanelButton}>znFiltersPanel</button>
+        <button onClick={znCookiesSetButton}>znCookiesSet</button>
+        <button onClick={znCookieGetButton}>znCookiesGet</button>
         {!name && <button onClick={fetchUser}>Get User Info</button>}
         {name && <div>
           <p>Name: {name}</p>

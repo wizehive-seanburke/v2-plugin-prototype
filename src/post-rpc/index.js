@@ -1,4 +1,5 @@
 import Client from './client'
+import ZnSize from './ZnSize';
 
 export const client = new Client('https://platform.wizehive-dev.com')
 
@@ -30,6 +31,21 @@ export const znFiltersPanel = (options, callback) => {
   client.call('filtersPanel', { options }, callback, Infinity)
 }
 
+class ZnCookies {
+  get(key, callback) {
+    console.log('calling znCookieGet');
+    client.call('znCookiesGet', {key}, callback, Infinity)
+  }
+  set(key, data) {
+    console.log('calling znCookieSet');
+    client.call('znCookiesSet', {key, data}, null, Infinity);
+  }
+}
+
+export const $log = console;
+
+export const znCookies = new ZnCookies();
+export const znSize = new ZnSize(client);
 // client.subscribe('item', (result, error) => {
 //   console.log(result)
 // })
