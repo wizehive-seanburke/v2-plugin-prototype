@@ -9,7 +9,7 @@ const getHeight = () => {
     // const documentScroll = document.documentElement.scrollHeight + documentTop;
     // const documentOffset = document.documentElement.offsetHeight + documentTop;
     // return Math.max(bodyScroll, bodyOffset, documentScroll, documentOffset);
-    return heightCalc.lowesElement();
+    return heightCalc.lowestElement();
 }
 
 const getWidth = () => {
@@ -53,12 +53,30 @@ const heightCalc = {
     bodyOffset: () => {
         return document.body.offsetHeight + getComputedStyle('marginTop') + getComputedStyle('marginBottom')
     },
+    bodyScroll: () => {
+        return document.body.scrollHeight
+    },
     documentElementOffset: () => {
         return document.documentElement.offsetHeight
     },
-    lowesElement: () => {
+    documentElementScroll: () => {
+        return document.documentElement.scrollHeight
+    },
+    lowestElement: () => {
         return Math.max(heightCalc.bodyOffset() || heightCalc.documentElementOffset(), getMaxElement('bottom', getAllElements()))
+    },
+    min: () => {
+        return Math.min.apply(null, getAllMeasurements(heightCalc))
     }
+}
+
+const getAllMeasurements = (dimension) => {
+    return [
+        dimension.bodyOffset(),
+        dimension.bodyScroll(),
+        dimension.documentElementOffset(),
+        dimension.documentElementScroll()
+    ]
 }
 
 const getAllElements = () => {
