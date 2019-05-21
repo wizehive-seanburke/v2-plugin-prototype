@@ -3,7 +3,7 @@ import ZnSize from './ZnSize';
 
 export const client = new Client('https://platform.wizehive-dev.com')
 
-client.logging(true)
+client.logging(false)
 client.start()
 
 export const getMe = callback => client.call('znHttp', {
@@ -45,7 +45,8 @@ class ZnCookies {
 export const $log = console;
 
 export const znCookies = new ZnCookies();
-export const znSize = new ZnSize(client);
+export const znSize = window.ZnSize = new ZnSize(client);
+
 // client.subscribe('item', (result, error) => {
 //   console.log(result)
 // })

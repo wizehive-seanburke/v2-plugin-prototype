@@ -4,6 +4,7 @@ import './App.css'
 
 import { useSubscription } from './hooks'
 import {getMe, znConfirm, znMessage, znModal, znFiltersPanel, znSize, znCookies, $log} from './post-rpc'
+import ZnSize from "./post-rpc/ZnSize";
 
 const App = props => {
   const [avatar, setAvatar] = useState(logo)
@@ -11,8 +12,9 @@ const App = props => {
   const [timezone, setTimezone] = useState('')
   const [lastLogin, setLastLogin] = useState('')
   const [items, setItems] = useState([])
+  let [boxDim, setBoxDim] = useState({width: '50px', height: '50px'})
 
-  znSize.autoSize();
+  znSize.autoSize(10000);
 
   useSubscription('item', (item, err) => {
     if (err) return console.error(err)
@@ -51,6 +53,17 @@ const App = props => {
 
   const znCookiesSetButton = () => znCookies.set('test', 'test string');
 
+  const realRandom = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  const changeDocumentSize = () => {
+    console.log(boxDim);
+    let width = realRandom(100, 900) + 'px';
+    let height = realRandom(100, 600) + 'px';
+    setBoxDim({height: height, width: width});
+  };
+
   return (
     <div className='App'>
       <header className='App-header'>
@@ -62,6 +75,7 @@ const App = props => {
         <button onClick={filtersPanelButton}>znFiltersPanel</button>
         <button onClick={znCookiesSetButton}>znCookiesSet</button>
         <button onClick={znCookieGetButton}>znCookiesGet</button>
+        <button onClick={changeDocumentSize}>Change size</button>
         {!name && <button onClick={fetchUser}>Get User Info</button>}
         {name && <div>
           <p>Name: {name}</p>
@@ -70,6 +84,7 @@ const App = props => {
           <img src='/pbwh.png' alt='Powered by WizeHive' />
         </div>}
         {items.length > 0 && items.map((item, i) => <p key={i}>{ item }</p>)}
+        <div style={{width: boxDim.width, height: boxDim.height, background: 'red'}}> </div>
       </header>
     </div>
   )
