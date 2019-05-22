@@ -40,9 +40,7 @@ const getMaxElement = (side, elements) => {
         timer = Date.now || function() { return new Date().getTime() }
     for (let i = 0; i < elementsLength; i++) {
         elVal = elements[i].getBoundingClientRect()[side] + getComputedStyle('margin' + Side, elements[i])
-        console.log({'element': elements[i], 'val': elVal})
         if (elVal > maxVal) {
-            console.log({'elVal': elVal, 'maxVal': maxVal})
             maxVal = elVal
         }
     }
@@ -93,7 +91,6 @@ class ZnSize {
         this.timer = null;
     }
     setSize(dimensions) {
-        console.log('In setSize');
         if (typeof dimensions === 'undefined') {
             dimensions = {};
         }
@@ -103,11 +100,9 @@ class ZnSize {
         if (!dimensions.width) {
             dimensions.width =  getWidth() + 'px';
         }
-        console.log(dimensions);
         this.client.call('resize', {dimensions}, null, Infinity);
     }
     autoSize(timeout) {
-        console.log('In autosize');
         typeof timeout === 'number' || typeof timeout === 'undefined' || timeout
             ? this.timer = setInterval(() => {
                 this.setSize()

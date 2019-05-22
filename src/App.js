@@ -14,7 +14,7 @@ const App = props => {
   const [items, setItems] = useState([])
   let [boxDim, setBoxDim] = useState({width: '50px', height: '50px'})
 
-  znSize.autoSize(10000);
+  znSize.autoSize();
 
   useSubscription('item', (item, err) => {
     if (err) return console.error(err)
